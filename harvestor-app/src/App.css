@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&family=Manrope:wght@800&family=Montserrat:wght@350&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#root {
+    max-width: None;
+    margin: 0 auto;
+    padding: 0;
+    text-align: center;
+    font-family: 'League Spartan', sans-serif;
+}
+
+:root {
+    --color-primary: #E6DDCA;
+}
