@@ -4,8 +4,8 @@ import Sidebar from "../components/Sidebar";
 
 function Homepage(){
     return (
-        <div className="bg-primary min-h-screen">
-            <div className="flex flex-row justify-between">
+        <div className="bg-tertiary min-h-screen">
+            <div className="flex flex-row">
                 <Logo/>      
                 <Sidebar/>
             </div>
