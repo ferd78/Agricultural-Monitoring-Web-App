@@ -1,13 +1,19 @@
 import React, { useState } from "react";
 import { Card } from "@nextui-org/react";
 import upload from "../assets/cloud-computing.png";
-import { Button } from "@nextui-org/react";
+// import { Button } from "@nextui-org/react";
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@nextui-org/react";
 
 function ImageClassifier() {
     const [file, setFile] = useState(null);
     const [isDragging, setIsDragging] = useState(false); 
     const [uploadStatus, setUploadStatus] = useState(""); 
+    const [selectedKeys, setSelectedKeys] = React.useState(new Set(["text"]));
 
+    const selectedValue = React.useMemo(
+        () => Array.from(selectedKeys).join(", ").replace(/_/g, ""),
+        [selectedKeys],
+    );
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
         setFile(selectedFile);
@@ -99,6 +105,25 @@ function ImageClassifier() {
             >
                 Upload File
             </Button>
+            <Dropdown className="rounded-lg bg-white font-bold px-4 py-2">
+                <DropdownTrigger>
+                    <Button className="bg-white rounded-lg font-bold mt-4">
+                    {selectedValue}
+                    </Button>
+                </DropdownTrigger>
+                <DropdownMenu
+                    disallowEmptySelection
+                    aria-label="Single selection example"
+                    selectedKeys={selectedKeys}
+                    selectionMode="single"
+                    onSelectionChange={setSelectedKeys}
+                >
+                    <DropdownItem key="text">CNN</DropdownItem>
+                    <DropdownItem key="number">MobileNet</DropdownItem>
+                    <DropdownItem key="date">NestNet</DropdownItem>
+                    <DropdownItem key="single_date">EfficientNet</DropdownItem>
+                </DropdownMenu>`
+            </Dropdown>
             <p className="mt-6 text-red-600 font-bold">{uploadStatus}</p>
         </div>
     );
