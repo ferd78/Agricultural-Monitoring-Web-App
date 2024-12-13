@@ -2,7 +2,6 @@ import React from "react";
 import Logo from "../components/Logo";
 import Description from "../components/Description";
 import About from "../components/About";
-import { useNavigate } from "react-router-dom";
 
 function Homepage() {
 

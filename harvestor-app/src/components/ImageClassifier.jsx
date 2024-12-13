@@ -6,6 +6,7 @@ import {
     DropdownMenu,
     DropdownItem,
     Button,
+    Progress,
 } from "@nextui-org/react";
 import upload from "../assets/cloud-computing.png";
 
@@ -14,8 +15,14 @@ function ImageClassifier() {
     const [isDragging, setIsDragging] = useState(false);
     const [uploadStatus, setUploadStatus] = useState("");
     const [selectedModel, setSelectedModel] = useState("EfficientNet");
-    const [result, setResult] = useState(""); // Store result as a string for the textbox
-
+    const [result, setResult] = useState(null); // Store result as an object for better handling
+    
+    const getProgressColor = (score) => {
+        if (score > 80) return "secondary"; // Green
+        if (score > 50) return "warning"; // Yellow
+        return "warning"; // Red
+    }; 
+    
     const modelEndpoints = {
         EfficientNet: "http://localhost:8000/predict_efficientnet/",
         CNN: "http://localhost:8000/predict_cnn/",
@@ -27,7 +34,7 @@ function ImageClassifier() {
         const selectedFile = event.target.files[0];
         setFile(selectedFile);
         setUploadStatus("");
-        setResult(""); // Clear previous result
+        setResult(null); // Clear previous result
     };
 
     const handleDrop = (event) => {
@@ -36,7 +43,7 @@ function ImageClassifier() {
         const droppedFile = event.dataTransfer.files[0];
         setFile(droppedFile);
         setUploadStatus("");
-        setResult(""); // Clear previous result
+        setResult(null); // Clear previous result
     };
 
     const handleDragOver = (event) => {
@@ -73,12 +80,12 @@ function ImageClassifier() {
 
             if (response.ok) {
                 const data = await response.json();
-                // Store API response as a formatted string
-                setResult(
-                    `Model Name: ${data.model}\nDisease: ${data.predicted_disease}\nConfidence Score: ${data.confidence_score.toFixed(
-                        2
-                    )}`
-                );
+                // Store API response as an object for better display
+                setResult({
+                    model: data.model,
+                    disease: data.predicted_disease,
+                    confidenceScore: data.confidence_score * 100, // Convert to percentage for the progress bar
+                });
                 setUploadStatus("File uploaded successfully!");
             } else {
                 setUploadStatus("Failed to upload file.");
@@ -93,7 +100,7 @@ function ImageClassifier() {
         <div className="flex flex-col items-center justify-center w-screen h-screen">
             {/* Drag and Drop Card */}
             <Card
-                className={`w-1/3 h-1/3 rounded-xl shadow-md border bg-secondary ${
+                className={`w-1/3 h-1/3 rounded-xl shadow-md border bg-quinary ${
                     isDragging ? "border-blue-500 bg-blue-100" : "border-dashed border-black"
                 } flex items-center justify-center`}
                 onDrop={handleDrop}
@@ -123,9 +130,9 @@ function ImageClassifier() {
 
             {/* Dropdown and Upload Button */}
             <div className="space-x-4">
-                <Dropdown>
+                <Dropdown backdrop="blur">
                     <DropdownTrigger>
-                        <Button className="bg-quaternary rounded-lg font-bold mt-4">
+                        <Button className="shadow-xl bg-quaternary rounded-lg font-bold mt-4">
                             Choose model: {selectedModel}
                         </Button>
                     </DropdownTrigger>
@@ -134,34 +141,51 @@ function ImageClassifier() {
                         selectionMode="single"
                         onAction={handleModelChange}
                     >
-                        <DropdownItem key="EfficientNet" className="bg-green-500 rounded-md shadow-xl">EfficientNet</DropdownItem>
-                        <DropdownItem key="CNN" className="bg-red-500 rounded-md shadow-xl">CNN</DropdownItem>
-                        <DropdownItem key="MobileNet" className="bg-blue-500 rounded-md shadow-xl">MobileNet</DropdownItem>
-                        <DropdownItem key="NASNet" className="bg-white rounded-md shadow-xl">NASNet</DropdownItem>
+                        <DropdownItem key="EfficientNet" className="bg-green-500 rounded-md shadow-xl">
+                            EfficientNet
+                        </DropdownItem>
+                        <DropdownItem key="CNN" className="bg-red-500 rounded-md shadow-xl">
+                            CNN
+                        </DropdownItem>
+                        <DropdownItem key="MobileNet" className="bg-blue-500 rounded-md shadow-xl">
+                            MobileNet
+                        </DropdownItem>
+                        <DropdownItem key="NASNet" className="bg-white rounded-md shadow-xl">
+                            NASNet
+                        </DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
                 <Button
                     onClick={handleUpload}
-                    className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition font-bold"
+                    className="shadow-xl mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition font-bold"
                 >
                     Upload File
                 </Button>
             </div>
 
-            {/* Status Message */}
+            
             <p className="mt-6 text-red-600 font-bold">{uploadStatus}</p>
 
-            {/* Result Textbox */}
-            {result && ( 
-                <div className="flex flex-col pt-4 space-y-1.5 font-bold">
-                    <a href="">Below are the results:</a>
-                    <textarea
-                    className="w-80 h-32 mt-6 p-4 rounded-xl bg-white resize-none"
-                    value={result}
-                    readOnly
-                />
-                </div>
                 
+            {result && (
+                <Card className="mt-6 w-96 p-6 shadow-lg bg-gray-100 rounded-lg">
+                    <h2 className="text-lg font-bold text-gray-800">Detection Results: </h2>
+                    <p className="text-md mt-2">
+                        <strong>Model Name:</strong> {result.model}
+                    </p>
+                    <p className="text-md mt-2">
+                        <strong>Disease:</strong> {result.disease}
+                    </p>
+                    <p className="text-md mt-2">
+                        <strong>Confidence Score:</strong>
+                    </p>
+                    <Progress
+                        color= {getProgressColor(result.confidenceScore)}
+                        value={result.confidenceScore}
+                        className="mt-2"
+                        label={`${result.confidenceScore.toFixed(2)}%`}
+                    />
+                </Card>
             )}
         </div>
     );
