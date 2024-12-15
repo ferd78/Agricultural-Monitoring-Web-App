@@ -26,7 +26,7 @@ function About(){
                 <div>
 
                 </div>
-                    <Button className="mx-auto my-4 w-1/6 bg-secondary rounded-lg flex items-center justify-center" onClick={handleNavigation}>
+                    <Button className="mx-auto my-4 w-1/6 bg-quinary rounded-lg flex items-center justify-center" onClick={handleNavigation}>
                     <img src={Cube} alt="" className="w-4"/>
                     Go To Demo
                     </Button>
