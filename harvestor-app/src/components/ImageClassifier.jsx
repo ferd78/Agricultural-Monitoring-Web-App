@@ -25,10 +25,10 @@ function ImageClassifier() {
     };
 
     const modelEndpoints = {
-        EfficientNet: "http://localhost:8000/predict_efficientnet/",
-        CNN: "http://localhost:8000/predict_cnn/",
-        MobileNet: "http://localhost:8000/predict_mobilenet/",
-        NASNet: "http://localhost:8000/predict_nasnet/",
+        EfficientNet: "http://47.129.0.222:8000/predict_efficientnet/",
+        CNN: "http://47.129.0.222:8000/predict_cnn/",
+        MobileNet: "http://47.129.0.222:8000/predict_mobilenet/",
+        NASNet: "http://47.129.0.222:8000/predict_nasnet/",
     };
 
     const handleFileChange = (event) => {
