@@ -1,8 +1,9 @@
-# Agricultural Monitoring Web App
+# Agricultural Monitoring Web App (Harvestor)
 
-W.I.P for Dsitributive System Final Project
+Harvestor is a distributed system project that is catered to the optimization of agricultural monitoring by utilizing machine learning techniques. Harvestor not only strives to improve the availability of crop detection systems, it provides a comparison of different algorithms, allowing users to optimize their crop detection.
 
-## How to run
+
+## to run harvestor, do the following commands below:
 
 ```bash
 git clone https://github.com/ferd78/Agricultural-Monitoring-Web-App.git
