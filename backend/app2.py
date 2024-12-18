@@ -15,7 +15,7 @@ from fastapi import FastAPI
 app = FastAPI()
 # Allow requests from React app's origin
 origins = [
-    "http://localhost:5173",  # React development server
+    "http://47.129.0.222:5173",  # React development server
 ]
 
 app.add_middleware(
