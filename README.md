@@ -20,3 +20,8 @@ npm install
 ```bash
 npm run dev
 ```
+
+
+# Agricultural Monitoring Web App (Harvestor)
+
+http://47.129.0.222:5173
